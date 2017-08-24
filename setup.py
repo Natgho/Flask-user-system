@@ -4,54 +4,71 @@
 # Version: 0.1
 # Website: https://github.com/Natgho/Flask-user-system
 
-from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
-import os
+from flask import Flask, flash, render_template, request, session, jsonify
 from sqlalchemy.orm import sessionmaker
 from db_conf import *
 
-
 app = Flask(__name__)
+
 
 @app.route('/')
 def home():
+    """
+    If user not logged in, redirect index page, else show Hello page.
+    :return:
+    """
     if not session.get('logged_in'):
         return render_template("index.html")
     else:
         return "Hello User.  <a href='/logout'>Logout</a>"
 
-@app.route('/register', methods=['GET','POST'])
+
+@app.route('/register', methods=['GET', 'POST'])
 def user_register():
+    """
+    Check requests, If the registration request, save user else show register page.
+    :return:
+    """
     if request.method == 'POST':
-        POST_USERNAME = str(request.form['username'])
-        POST_PASSWORD = str(request.form['password'])
-        POST_EMAIL = str(request.form['email'])
-        POST_COUNTRY = str(request.form['country'])
-        Session = sessionmaker(bind=engine)
-        s = Session()
-        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        post_username = str(request.form['username'])
+        post_password = str(request.form['password'])
+        post_email = str(request.form['email'])
+        post_country = str(request.form['country'])
+        # return "{} {} {} {} ".format(post_username, post_password, post_email, post_country)
+        user_session = sessionmaker(bind=engine)
+        s = user_session()
+        query = s.query(User).filter(User.username.in_([post_username]), User.password.in_([post_password]))
         result = query.first()
+        # Check user if exist
         if result:
-             flash('User Already registered!')
-             return render_template('register.html')
+            flash('User Already registered!')
+            return render_template('register.html')
         else:
-            tmp_user = User(POST_USERNAME, POST_PASSWORD, POST_EMAIL, POST_COUNTRY)
+            # Create user object and save database.
+            tmp_user = User(post_username, post_password, post_email, post_country)
             s.add(tmp_user)
             s.commit()
             # s.close()
             return "User saved! <br><a href='/'>return Home</a"
-        # return "{} {} {} {} ".format(POST_USERNAME, POST_PASSWORD, POST_EMAIL, POST_COUNTRY)
+            # return "{} {} {} {} ".format(POST_USERNAME, POST_PASSWORD, POST_EMAIL, POST_COUNTRY)
     else:
         return render_template('register.html')
 
-@app.route('/login', methods=['GET','POST'])
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Check request, Create a session if user information available else show login page.
+    :return:
+    """
     if request.method == 'POST':
-        POST_USERNAME = str(request.form['username'])
-        POST_PASSWORD = str(request.form['password'])
-        Session = sessionmaker(bind=engine)
-        s = Session()
-        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        post_username = str(request.form['username'])
+        post_password = str(request.form['password'])
+        login_session = sessionmaker(bind=engine)
+        s = login_session()
+        query = s.query(User).filter(User.username.in_([post_username]), User.password.in_([post_password]))
         result = query.first()
+        # Check the truth of the user information
         if result:
             session['logged_in'] = True
         else:
@@ -60,15 +77,20 @@ def login():
     else:
         return render_template('login.html')
 
+
 @app.route('/get_countries', methods=['GET'])
 def get_countries():
-    Session = sessionmaker(bind=engine)
-    s = Session()
+    """
+    Get all countries from database.
+    This method using for generate reply for AJAX request.
+    :return:
+    """
+    country_session = sessionmaker(bind=engine)
+    s = country_session()
     response = s.query(Country).all()
     country_schema = CountrySerializer(many=True)
     countries = country_schema.dump(response)
     return jsonify(countries.data)
-
 
 @app.route("/logout")
 def logout():
