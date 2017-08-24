@@ -1,2 +1,11 @@
+click==6.7
 Flask==0.12.2
 Flask-Login==0.4.0
+Flask-MySQL==1.4.0
+itsdangerous==0.24
+Jinja2==2.9.6
+MarkupSafe==1.0
+PyMySQL==0.7.11
+python-dotenv==0.6.5
+SQLAlchemy==1.1.13
+Werkzeug==0.12.2
