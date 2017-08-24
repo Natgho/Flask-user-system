@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="/static/style.css" type="text/css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type=text/javascript src="/static/jquery.js"></script>
 {% block body %}
 {% if session['logged_in'] %}
 <p>You're logged in already!</p>
@@ -46,11 +48,9 @@
                 </div>
 
                 <div class="control-group">
-                    <input type="text" class="login-field" value="" placeholder="country" name="country" required>
-                    <label class="login-field-icon fui-user" for="register-country"></label>
+                <select name="country" id="country">
+                </select>
                 </div>
-
-
                 <input type="submit" value="Register" class="btn btn-primary btn-large btn-block">
                 <br>
             </div>
