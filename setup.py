@@ -4,10 +4,11 @@
 # Version: 0.1
 # Website: https://github.com/Natgho/Flask-user-system
 
-from flask import Flask, flash, redirect, render_template, request, session, abort
+from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
 import os
 from sqlalchemy.orm import sessionmaker
 from db_conf import *
+
 
 app = Flask(__name__)
 
@@ -37,7 +38,7 @@ def user_register():
             s.add(tmp_user)
             s.commit()
             # s.close()
-            return "User saved!"
+            return "User saved! <br><a href='/'>return Home</a"
         # return "{} {} {} {} ".format(POST_USERNAME, POST_PASSWORD, POST_EMAIL, POST_COUNTRY)
     else:
         return render_template('register.html')
@@ -58,6 +59,15 @@ def login():
         return home()
     else:
         return render_template('login.html')
+
+@app.route('/get_countries', methods=['GET'])
+def get_countries():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    response = s.query(Country).all()
+    country_schema = CountrySerializer(many=True)
+    countries = country_schema.dump(response)
+    return jsonify(countries.data)
 
 
 @app.route("/logout")
