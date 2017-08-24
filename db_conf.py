@@ -4,14 +4,13 @@
 # Version: 0.1
 # Website: https://github.com/Natgho/Flask-user-system
 
-from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy import create_engine
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
-from marshmallow import Schema, fields
+from marshmallow import Schema
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -29,9 +28,7 @@ engine = create_engine('mysql+pymysql://{username}:{password}@{host}:{port}/{db}
 Base = declarative_base()
 
 
-########################################################################
 class User(Base):
-    """"""
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -58,6 +55,7 @@ class Country(Base):
     def __init__(self, country_name):
         self.country_name = country_name
 
+
 # create tables
 # TODO Log system will be developed
 try:
@@ -65,9 +63,11 @@ try:
 except Exception as e:
     print('Database not created', e)
 
+
 class CountrySerializer(Schema):
     class Meta:
         fields = ('country_name',)
+
 
 # TODO create add country page
 def create_dummy_countries():
@@ -78,4 +78,44 @@ def create_dummy_countries():
     tmp_countries = ["Türkiye", "Almanya", "Fransa", "Ingiltere", "Kazakistan", "Rusya", "Arabistan"]
     for country in tmp_countries:
         session.add(Country(country))
+    session.commit()
+
+
+def create_dummy_users():
+    from sqlalchemy.orm import sessionmaker
+
+    dummy_user_session = sessionmaker(bind=engine)
+    session = dummy_user_session()
+    tmp_users = [
+        {
+            'username': "Sezer",
+            'password': "test123",
+            "email": "sezer@sezer.com",
+            "country": "Türkiye"
+        },
+        {
+            'username': "Barış",
+            'password': "123test!.",
+            "email": "baris@baris.com",
+            "country": "Almanya"
+        },
+        {
+            'username': "BengiSu",
+            'password': "123test123",
+            "email": "bengisu@bengisu.com",
+            "country": "Ingiltere"
+        },
+        {
+            'username': "Ayça",
+            'password': "123test123",
+            "email": "ayca@ayca.com",
+            "country": "Rusya"
+        }
+
+    ]
+    for user in tmp_users:
+        session.add(User(user['username'],
+                         user['password'],
+                         user['email'],
+                         user['country']))
     session.commit()
