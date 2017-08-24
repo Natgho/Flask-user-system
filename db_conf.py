@@ -11,6 +11,7 @@ from sqlalchemy.orm import relationship, backref
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+from marshmallow import Schema, fields
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -63,3 +64,18 @@ try:
     Base.metadata.create_all(engine)
 except Exception as e:
     print('Database not created', e)
+
+class CountrySerializer(Schema):
+    class Meta:
+        fields = ('country_name',)
+
+# TODO create add country page
+def create_dummy_countries():
+    from sqlalchemy.orm import sessionmaker
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    tmp_countries = ["Türkiye", "Almanya", "Fransa", "Ingiltere", "Kazakistan", "Rusya", "Arabistan"]
+    for country in tmp_countries:
+        session.add(Country(country))
+    session.commit()
