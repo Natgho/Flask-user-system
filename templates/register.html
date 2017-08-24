@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html>
+<link rel="stylesheet" href="/static/style.css" type="text/css">
+{% block body %}
+{% if session['logged_in'] %}
+<p>You're logged in already!</p>
+{% else %}
 
+
+<body>
+<div class="alert-container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+</div>
+
+
+<form action="/register" method="POST">
+    <div class="login">
+        <div class="login-screen">
+            <div class="app-title">
+                <h1>Register</h1>
+            </div>
+
+            <div class="login-form">
+                <div class="control-group">
+                    <input type="text" class="login-field" value="" placeholder="username" name="username" required>
+                    <label class="login-field-icon fui-user" for="register-name"></label>
+                </div>
+
+                <div class="control-group">
+                    <input type="password" class="login-field" value="" placeholder="password" name="password" required>
+                    <label class="login-field-icon fui-lock" for="register-pass"></label>
+                </div>
+
+                <div class="control-group">
+                    <input type="text" class="login-field" value="" placeholder="email" name="email" required>
+                    <label class="login-field-icon fui-user" for="register-mail"></label>
+                </div>
+
+                <div class="control-group">
+                    <input type="text" class="login-field" value="" placeholder="country" name="country" required>
+                    <label class="login-field-icon fui-user" for="register-country"></label>
+                </div>
+
+
+                <input type="submit" value="Register" class="btn btn-primary btn-large btn-block">
+                <br>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endif %}
+{% endblock %}
 </body>
 </html>

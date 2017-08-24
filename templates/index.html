@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+<link rel="stylesheet" href="/static/style.css" type="text/css">
+{% block body %}
+{% if session['logged_in'] %}
+<p>You're logged in already!</p>
+{% else %}
+<div>
+    <button type="button" onclick="login_page()" class="change btn-primary btn-large btn-block">Login</button>
+    <br>
+    <button type="button" onclick="register()" class="change btn-secondary btn-large btn-block">Register</button>
+</div>
+{% endif %}
+{% endblock %}
+
+<script>
+function login_page() {
+    //alert('hello!');
+    window.location.href='/login';
+}
+function register() {
+    window.location.href='/register';
+}
+</script>
+</body>
+</html>
