@@ -2,7 +2,7 @@
 Flask user register and login system
 
 # How to Build?
-1. Create Mysql docker container;
+1. Create Mysql docker container (If you have MySQL service, skip this step);
 ```bash
 docker run --name flask-mysql-service -e MYSQL_ROOT_PASSWORD=test_password -d mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ```
@@ -16,4 +16,12 @@ pip install -r requirements.txt
 4. The code that will create the database;
 ```bash
 python db.conf.py
+python dummy_processes.py
+python setup.py
 ```
+----
+Test usernames and passwords:
+* Sezer test123
+* Barış 123test!.
+* BengiSu 123test123
+* Ayça 123test123
