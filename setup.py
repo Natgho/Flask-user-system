@@ -7,7 +7,7 @@
 from flask import Flask, flash, render_template, request, session, jsonify
 from sqlalchemy.orm import sessionmaker
 from db_conf import *
-
+from werkzeug.security import generate_password_hash, check_password_hash # http://flask.pocoo.org/snippets/54/
 app = Flask(__name__)
 
 
@@ -31,7 +31,7 @@ def user_register():
     """
     if request.method == 'POST':
         post_username = str(request.form['username'])
-        post_password = str(request.form['password'])
+        post_password = generate_password_hash(str(request.form['password']))
         post_email = str(request.form['email'])
         post_country = str(request.form['country'])
         # return "{} {} {} {} ".format(post_username, post_password, post_email, post_country)
@@ -66,10 +66,10 @@ def login():
         post_password = str(request.form['password'])
         login_session = sessionmaker(bind=engine)
         s = login_session()
-        query = s.query(User).filter(User.username.in_([post_username]), User.password.in_([post_password]))
+        query = s.query(User).filter(User.username.in_([post_username]))
         result = query.first()
         # Check the truth of the user information
-        if result:
+        if result and check_password_hash(result.password, post_password):
             session['logged_in'] = True
         else:
             flash('Wrong username or password!')

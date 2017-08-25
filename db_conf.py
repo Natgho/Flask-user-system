@@ -11,6 +11,7 @@ import os
 from os.path import join, dirname
 from dotenv import load_dotenv
 from marshmallow import Schema
+from werkzeug.security import generate_password_hash
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -115,7 +116,7 @@ def create_dummy_users():
     ]
     for user in tmp_users:
         session.add(User(user['username'],
-                         user['password'],
+                         generate_password_hash(user['password']),
                          user['email'],
                          user['country']))
     session.commit()
