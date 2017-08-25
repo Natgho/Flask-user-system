@@ -2,10 +2,20 @@
 <html>
 <body>
 <link rel="stylesheet" href="/static/style.css" type="text/css">
-{% block body %}
-{% if session['logged_in'] %}
-<p>You're logged in already!</p>
-{% else %}
+
+<div class="alert-container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+</div>
+<br>
 <div>
     <button type="button" onclick="login_page()" class="change btn-primary btn-large btn-block">Login</button>
     <br>
@@ -15,13 +25,14 @@
 {% endblock %}
 
 <script>
-function login_page() {
-    //alert('hello!');
-    window.location.href='/login';
-}
-function register() {
-    window.location.href='/register';
-}
+    function login_page() {
+        //alert('hello!');
+        window.location.href = '/login';
+    }
+
+    function register() {
+        window.location.href = '/register';
+    }
 </script>
 </body>
 </html>
