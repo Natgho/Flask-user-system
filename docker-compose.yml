@@ -1,0 +1,41 @@
+version: "2.1"
+
+services:
+  mysql:
+    container_name: flask_mysql_service
+    container_name: flask_mysql_service.sezer.com
+    hostname: flask_mysql_service
+    domainname: sezer.com
+    image: mysql:latest
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'
+    environment:
+      - MYSQL_ROOT_PASSWORD=test_password
+      - MYSQL_DATABASE=bumin
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      internal_network:
+            ipv4_address: 10.5.0.5
+
+  flask-core-system:
+    container_name: flask-core-system
+    image: ubuntu:latest
+    # domainname: "onemli_degil"
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - 8000:4000
+    networks:
+      internal_network:
+            ipv4_address: 10.5.0.3
+networks:
+  internal_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
