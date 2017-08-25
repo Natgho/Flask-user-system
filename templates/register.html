@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/style.css" type="text/css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type=text/javascript src="/static/jquery.js"></script>
+<head>
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type=text/javascript src="/static/jquery.js"></script>
+    <meta charset="UTF-8">
+    <title>Flask Login System</title>
+    <link rel="icon" href="/static/favicon.png">
+</head>
 {% block body %}
 {% if session['logged_in'] %}
 <p>You're logged in already!</p>
@@ -48,8 +53,8 @@
                 </div>
 
                 <div class="control-group">
-                <select name="country" id="country">
-                </select>
+                    <select name="country" id="country">
+                    </select>
                 </div>
                 <input type="submit" value="Register" class="btn btn-primary btn-large btn-block">
                 <br>

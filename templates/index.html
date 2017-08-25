@@ -1,7 +1,27 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <meta charset="UTF-8">
+    <title>Flask Login System</title>
+    <link rel="icon" href="/static/favicon.png">
+    <script>
+        function login_page() {
+            //alert('hello!');
+            window.location.href = '/login';
+        }
+
+        function register() {
+            window.location.href = '/register';
+        }
+    </script>
+</head>
 <body>
-<link rel="stylesheet" href="/static/style.css" type="text/css">
+
+{% block body %}
+{% if session['logged_in'] %}
+<p>You're logged in already!</p>
+{% else %}
 
 <div class="alert-container">
     {% with messages = get_flashed_messages() %}
@@ -23,16 +43,5 @@
 </div>
 {% endif %}
 {% endblock %}
-
-<script>
-    function login_page() {
-        //alert('hello!');
-        window.location.href = '/login';
-    }
-
-    function register() {
-        window.location.href = '/register';
-    }
-</script>
 </body>
 </html>
