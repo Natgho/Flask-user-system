@@ -97,6 +97,14 @@ def logout():
     session['logged_in'] = False
     return home()
 
+# TODO Error page will be customized.
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('404.html'), 500
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
