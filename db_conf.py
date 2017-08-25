@@ -19,7 +19,7 @@ load_dotenv(dotenv_path)
 # OR, the same with increased verbosity:
 load_dotenv(dotenv_path)
 # engine = create_engine('mysql+pymysql://root:test_password@172.17.0.2/bumin')
-engine = create_engine('mysql+pymysql://{username}:{password}@{host}:{port}/{db}'.format(
+engine = create_engine('mysql+pymysql://{username}:{password}@{host}:{port}/{db}?charset=utf8'.format(
     username=os.environ.get('MYSQL_USER'),
     password=os.environ.get('MYSQL_PASSWORD'),
     host=os.environ.get('MYSQL_HOST'),
