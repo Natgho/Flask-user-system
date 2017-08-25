@@ -4,7 +4,7 @@
 # Version: 0.1
 # Website: https://github.com/Natgho/Flask-user-system
 
-from db_conf import create_dummy_countries, create_dummy_users
+from db_conf import *
 
 if __name__ == '__main__':
     # Create dummy countries
