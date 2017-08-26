@@ -7,7 +7,7 @@ RUN apt-get install -y net-tools
 COPY . /app
 WORKDIR /app
 RUN pip3 install -r requirements.txt
-# CMD ["python", "dummy_processes.py"]
+# CMD ["python3", "dummy_processes.py"]
 ENTRYPOINT ["python3"]
 CMD ["setup.py"]
 
